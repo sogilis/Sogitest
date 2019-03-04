@@ -13,46 +13,59 @@
 
 #include <stdio.h>
 
+const char initialChar = 'i';
 
-int main(int argc, char const *argv[])
-{
-    /*
-    c      current char from stdin
-    last   last char
-    count  current count of consecutive bits of same value
-    */
-    char c = 0, last = 0, count = 0;
+/*
+ * injectBitStuffing allow to inject in the stdout the reverse value of the
+ * given bit denoted here by 'c' char
+ */
+void injectBitStuffing(char byteAsChar) {
+  if (byteAsChar == '1') {
+    putchar('0');
+  } else {
+    putchar('1');
+  }
+}
 
-    while ((c = getchar()) != EOF && c != '\n') {
+int main(int argc, char const *argv[]) {
+  /*
+  c      current char from stdin
+  previous   previous char
+  count  current count of consecutive bits of same value
+  */
+  char c = '0', previous = initialChar;
+  int count = 0;
 
-        // If current char is not 0 or 1, it skips to next iteration
-        if (c != '0' && c != '1')
-            continue;
+  while ((c = getchar()) != EOF && c != '\n') {
 
-        // current char is written on stdout
-        putchar(c);
-
-        // Transition or null count
-        if (c != last || count == 0)
-            count = 1;
-
-        // No transition
-        else {
-            count ++;
-
-            // 5 consecutive bits of same value
-            if (count == 5) {
-                if (c == '1')
-                    putchar('0');
-                else
-                    putchar('1');
-
-                count = 0;
-            }
-        }
-
-        last = c;
+    // If current char is not 0 or 1, it skips to next iteration
+    if (c != '0' && c != '1') {
+      continue;
     }
 
-    return 0;
+    // current char is written on stdout
+    putchar(c);
+
+    // Transition, reset count, update previous.
+    if (c != previous) {
+      count = 0;
+      previous = c;
+      continue;
+    }
+
+    count++;
+
+    // 5 consecutive bits of same value
+    if (count == 4) {
+      injectBitStuffing(c);
+      /*
+       * This allow to consider the last char of a 5 consecutive bits with
+       * same value as different.
+       */
+      previous = initialChar;
+      count = 0;
+    }
+  }
+
+  return 0;
 }
