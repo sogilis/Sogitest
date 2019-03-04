@@ -1,28 +1,38 @@
-# Sogitest : Bit Stuffing
+# Sogitest: Bit Stuffing
 
-Enoncé : [bit stuffing](exercice.md)
+It is a bit stuffing encoder.
 
-# Installation
+After 5 consecutive '1', it adds a '0' and after 5 consecutive '0' it adds a '1'.
 
-## Dépendances
+    candidat@debian-sogilis:~$ echo 00111110 | ./bin/encoder
+    001111100
 
-- BATS pour les tests, voir [README](https://github.com/bats-core/bats-core) pour installation ;
-- Doxygen pour la génération de la documentation, voir [Manuel](http://doxygen.nl/manual/install.html) pour installation.
+Instructions (in french): [bit stuffing](exercice.md)
 
-# Compilation
+## Installation
 
-La compilation se fait grâce à [make](https://www.gnu.org/software/make).
+### Dependencies
+
+- [BATS](https://github.com/bats-core/bats-core) for testing
+
+On Ubuntu:
+
+    sudo add-apt-repository ppa:duggan/bats
+    sudo apt-get update
+    sudo apt-get install bats
+
+On Mac OS X:
+
+    brew install bats-core
+
+## Build
 
     make
 
-# Test
+Binary is put in bin/ (automatically created).
 
-[5 tests](test/tests.bats) sont exécutés.
+## Test
 
     make test
 
-# Doc
-
-La doc générée est sous format html, on peut la trouver dans le dossier doc.
-
-    make doc
+[5 tests](test/tests.bats) are executed.

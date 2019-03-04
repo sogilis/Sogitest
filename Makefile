@@ -1,54 +1,46 @@
-# exécutables
+# builders
 CC=gcc
 LD=gcc
 
-# répertoires source/destination
+# source and destination directories
 SRCDIR=src
-INCDIR=include
 OBJDIR=obj
 BINDIR=bin
-DOCDIR=doc
 
-# cible
+# target
 TARGET=$(BINDIR)/encoder
 
-# liste des fichiers sources et objets
+# source and object files lists
 SRC=$(wildcard $(SRCDIR)/*.c)
 OBJ=$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(TARGET)
-	@echo "make help pour afficher l'aide."
+	@echo "make help to show help."
 
-# affiche l'aide
+# show help
 help:
 	@echo ""
 	@echo "Usage :"
-	@echo "make       # compile et crée l'exécutable"
-	@echo "make test  # exécute les tests système"
-	@echo "make doc   # génère la doc"
-	@echo "make clean # Nettoie le répertoire"
+	@echo "make       # build target"
+	@echo "make test  # run tests"
+	@echo "make clean # clean everything"
 
-# crée la cible
+# build target
 $(TARGET): $(OBJ)
 	mkdir -p $(BINDIR)
 	$(LD) $^ -o $@
 
-# compile les fichiers objets
+# build object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)
 	$(CC) -o $@ -c $<
 
-
-# exécute les tests système
+# run tests
 test: $(TARGET)
 	bats test/tests.bats
 
-# génère la doc
-doc: $(OBJ)
-	doxygen
-
-# nettoie le répertoire
+# clean everything
 clean:
 	rm -R $(OBJDIR) $(BINDIR) $(DOCDIR)
 
-.PHONY: all help test doc clean
+.PHONY: all help test clean
